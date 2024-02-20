@@ -1,7 +1,9 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useLoader } from "@react-three/fiber";
 import { GLTFLoader } from "three/examples/jsm/Addons.js";
-
+import { AccumulativeShadows, Billboard, RandomizedLight, Sparkles } from "@react-three/drei";
+import { LayerMaterial, Depth } from "lamina";
+import * as THREE from "three";
 type treeType = {
   position: { x: number; z: number };
   box: number;
@@ -110,12 +112,17 @@ const Trees: React.FC<props> = ({ boundary, count }) => {
             <mesh scale={[tree.box, tree.box, tree.box]}>
               <boxGeometry />
               <meshStandardMaterial color="green" wireframe />
+              <Sparkles count={12} scale={2 * 2} size={6} speed={0.4} />
             </mesh>
             <primitive object={model.scene.clone()} />
+            
           </object3D>
         );
       })}
     </group>
   );
 };
+
+
+
 export default Trees;

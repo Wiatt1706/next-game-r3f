@@ -8,11 +8,11 @@ const Lights: React.FC = () => {
   useHelper(lightRef, DirectionalLightHelper, 5, "red");
   return (
     <>
-      <ambientLight intensity={1} />
+      <ambientLight intensity={1} color={"#ffffff"} />
       <directionalLight
         ref={lightRef}
         position={[0, 10, 10]}
-        color={"#7cdbe6"}
+        color={"#ffd700"}
         intensity={0.9}
         castShadow
         shadow-mapSize-height={1000}
@@ -22,7 +22,7 @@ const Lights: React.FC = () => {
         shadow-camera-top={20}
         shadow-camera-bottom={-20}
       />
-      <hemisphereLight args={["#7cdbe6", "#5e9c49", 0.9]} />
+      <hemisphereLight args={["#654321", "#87CEEB", 0.9]} />
     </>
   );
 };

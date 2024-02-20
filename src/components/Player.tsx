@@ -1,6 +1,13 @@
 import { useEffect, useRef, useState } from "react";
 import { useInput } from "@/hooks/useInput";
-import { OrbitControls, useAnimations, useGLTF } from "@react-three/drei";
+import {
+  AccumulativeShadows,
+  Center,
+  OrbitControls,
+  RandomizedLight,
+  useAnimations,
+  useGLTF,
+} from "@react-three/drei";
 import { useFrame, useThree } from "@react-three/fiber";
 import * as THREE from "three";
 
@@ -38,12 +45,11 @@ const directionOffset = ({ forward, backward, left, right }: any) => {
 
 const Player = () => {
   const [autoRotate, setAutoRotate] = useState(true);
+  const [directionLight, setDirectionLight] =
+    useState<THREE.DirectionalLight>();
+
   const model = useGLTF("./models/player.glb");
-  model.scene.traverse((object) => {
-    if (object.isMesh) {
-      object.castShadow = true;
-    }
-  });
+
   const { forward, backward, left, right, shift, jump } = useInput();
   const { actions } = useAnimations(model.animations, model.scene);
 
@@ -51,17 +57,42 @@ const Player = () => {
   const controlsRef = useRef<typeof OrbitControls>();
   const camera = useThree((state) => state.camera);
 
+  const { scene } = useThree();
+
+  const updateLightTarget = (moveX: number, moveZ: number) => {
+    if (directionLight) {
+      directionLight.position.x += moveX;
+      directionLight.position.z += moveZ;
+    }
+  };
   const updateCameraTarget = (moveX: number, moveZ: number) => {
     // 移动相机
     camera.position.x += moveX;
     camera.position.z += moveZ;
-
     // 旋转相机
     cameraTarget.x = model.scene.position.x;
     cameraTarget.y = model.scene.position.y + 2;
     cameraTarget.z = model.scene.position.z;
-    if (controlsRef.current) controlsRef.current.target = cameraTarget;
+    if (controlsRef.current) {
+      controlsRef.current.target = cameraTarget;
+    }
   };
+
+  useEffect(() => {
+    model.scene.traverse((object) => {
+      if (object.isMesh) {
+        object.castShadow = true;
+      }
+    });
+    // 遍历场景下的children，找到DirectionalLight
+    scene.traverse((child) => {
+      if (child instanceof THREE.DirectionalLight) {
+        // 这里可以对DirectionalLight进行操作
+        child.target = model.scene;
+        setDirectionLight(child);
+      }
+    });
+  }, []);
 
   useEffect(() => {
     let action = "";
@@ -127,6 +158,7 @@ const Player = () => {
       const moveZ = walkDirection.z * velocity * delta;
       model.scene.position.x += moveX;
       model.scene.position.z += moveZ;
+      updateLightTarget(moveX, moveZ);
       updateCameraTarget(moveX, moveZ);
     }
   });
