@@ -3,6 +3,8 @@ import { useInput } from "@/hooks/useInput";
 import {
   AccumulativeShadows,
   Center,
+  ContactShadows,
+  KeyboardControls,
   OrbitControls,
   RandomizedLight,
   useAnimations,
@@ -10,6 +12,8 @@ import {
 } from "@react-three/drei";
 import { useFrame, useThree } from "@react-three/fiber";
 import * as THREE from "three";
+import { CapsuleCollider, RigidBody } from "@react-three/rapier";
+import Controller from "ecctrl";
 
 let walkDirection = new THREE.Vector3();
 let rotateAngle = new THREE.Vector3(0, 1, 0);
@@ -54,6 +58,8 @@ const Player = () => {
   const { actions } = useAnimations(model.animations, model.scene);
 
   const currentAction = useRef("");
+  const group = useRef(null);
+  const rigidBody = useRef(null);
   const controlsRef = useRef<typeof OrbitControls>();
   const camera = useThree((state) => state.camera);
 
@@ -163,6 +169,14 @@ const Player = () => {
     }
   });
 
+  const keyboardMap = [
+    { name: "forward", keys: ["ArrowUp", "KeyW"] },
+    { name: "backward", keys: ["ArrowDown", "KeyS"] },
+    { name: "leftward", keys: ["ArrowLeft", "KeyA"] },
+    { name: "rightward", keys: ["ArrowRight", "KeyD"] },
+    { name: "jump", keys: ["Space"] },
+    { name: "run", keys: ["Shift"] },
+  ];
   return (
     <>
       <OrbitControls
@@ -175,6 +189,7 @@ const Player = () => {
         maxDistance={5}
         ref={controlsRef}
       />
+
       <primitive object={model.scene} />
     </>
   );
