@@ -1,12 +1,5 @@
 import { Canvas, extend, useFrame } from "@react-three/fiber";
-import {
-  Environment,
-  Float,
-  Html,
-  OrbitControls,
-  SoftShadows,
-  Stats,
-} from "@react-three/drei";
+import { Environment, SoftShadows, Stats } from "@react-three/drei";
 import Lights from "@/components/Lights";
 import Ground from "@/components/Ground";
 import Trees from "@/components/Tree";
@@ -19,8 +12,6 @@ import PcBook from "@/components/PcBook";
 import { GlassBox } from "@/components/GlassBox";
 import { Instances, Computers } from "@/components/Computers";
 import { Annotation } from "@/components/Annotation";
-
-import Embed from "../pages/Embed";
 
 export default function Home() {
   // We turn this into a spring animation that interpolates between 0 and 1
@@ -40,70 +31,32 @@ export default function Home() {
         {testing && <axesHelper />}
         {testing && <Stats />}
         {testing && <gridHelper args={[50, 50]} />}
+        <color attach="background" args={["#fef4ef"]} />
         <fog attach="fog" args={["#fff", 10, 60]} />
-        {enabled && <SoftShadows {...config} />}
         <Lights />
-        <color attach="background" args={["#fff"]} />
-
-        {/* <OrbitControls
-          autoRotateSpeed={-0.1}
-          zoomSpeed={0.25}
-          minZoom={40}
-          maxZoom={140}
-          enablePan={false}
-          dampingFactor={0.05}
-          minPolarAngle={Math.PI / 3}
-          maxPolarAngle={Math.PI / 3}
-        /> */}
+        {enabled && <SoftShadows {...config} />}
+        <Env />
         <Suspense>
           <Physics>
             <Ground />
-            <Trees boundary={100} count={10} />
+            {/* <Trees boundary={50} count={40} /> */}
             <Player />
           </Physics>
         </Suspense>
         {/* <Instances>
           <Computers scale={0.5} />
         </Instances> */}
+        {/* <GlassBox position-z={-4} /> */}
 
-       
-          <Annotation
-            prepend
-            position-y={2.75}
-            distanceFactor={2}
-            wrapperClass="content-frame"
-          >
-            <div className="content-frame-main">
-              <iframe
-                title="embed"
-                width={700}
-                height={500}
-                style={{ userSelect: "none" }}
-                src="https://www.deepcosmo.com/zh"
-                frameBorder={0}
-              />
-            </div>
-          </Annotation>
-          <Annotation
-            prepend
-            rotation-y={-Math.PI / 4.5}
-            position-x={4.75}
-            position-z={1.75}
-            position-y={2.75}
-            distanceFactor={2}
-            wrapperClass="content-frame"
-          >
-            <div className="content-frame-main">
-              <iframe
-                title="embed"
-                width={700}
-                height={500}
-                style={{ userSelect: "none" }}
-                src="https://codesandbox.io/dashboard/recent"
-                frameBorder={0}
-              />
-            </div>
-          </Annotation>
+        <Annotation position={[1.75, 3, 2.5]}>
+          Thalia <span style={{ fontSize: "1.5em" }}>🌗</span>
+        </Annotation>
+        <Annotation position={[-4.5, 3.6, -3]}>
+          Euphrosyne <span style={{ fontSize: "1.5em" }}>🌖</span>
+        </Annotation>
+        <Annotation position={[1.5, 8, -3]}>
+          <span style={{ fontSize: "1.5em" }}>🌕</span> Aglaia
+        </Annotation>
       </Canvas>
     </div>
   );

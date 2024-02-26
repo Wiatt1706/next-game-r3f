@@ -46,6 +46,8 @@ const Ground: React.FC = () => {
           <planeGeometry args={[100, 100]} />
           <shadowMaterial transparent opacity={0.4} />
         </mesh>
+
+        
         <ContactShadows position={[0, 0, 0]} scale={200} blur={1} far={10} />
       </RigidBody>
     </>

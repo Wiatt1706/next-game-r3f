@@ -18,7 +18,6 @@ export function HtmlBox() {
       >
         <Embed />
       </Html>
-      <EmbeddedWebpage url="https://www.deepcosmo.com" width={400} height={300}>
     </mesh>
   );
 }

@@ -8,10 +8,11 @@ const Lights: React.FC = () => {
   // useHelper(lightRef, DirectionalLightHelper, 5, "red");
   return (
     <>
+    
       <ambientLight intensity={1} color={"#ffffff"} />
       <directionalLight
         ref={lightRef}
-        position={[0, 20, 10]}
+        position={[0, 10, 10]}
         color={"#ffd700"}
         intensity={1.5}
         castShadow
